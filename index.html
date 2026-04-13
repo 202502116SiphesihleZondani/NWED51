@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>What's Cooking Today?</title>
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <!-- Decorative floating orbs -->
+        <div class="header-orb orb-1"></div>
+        <div class="header-orb orb-2"></div>
+        <div class="header-orb orb-3"></div>
+
+        <!-- Top nav bar -->
+        <nav class="header-nav">
+            <div class="nav-logo">
+                <span class="logo-icon">🍳</span>
+                <span class="logo-text">Cookin'</span>
+            </div>
+            <div class="nav-links">
+                <a href="aboutuspage.html">About Us</a>
+                <a href="login.html">Login</a>
+            </div>
+            <button id="darkModeToggle" class="dark-toggle" aria-label="Toggle dark mode">
+                <span class="toggle-icon">🌙</span>
+            </button>
+        </nav>
+
+        <!-- Hero content -->
+        <div class="header-hero">
+            <p class="header-eyebrow">Your Daily Kitchen Companion</p>
+            <h1>What's Cooking<br><em>Today?</em></h1>
+            <p class="header-subtitle">Discover, create, and share recipes you'll love</p>
+
+            <!-- Search -->
+            <form id="searchForm" class="search-form">
+                <div class="search-row">
+                    <span class="search-icon"><i class="fa fa-search"></i></span>
+                    <input id="searchInput" type="text" placeholder="Search for a recipe…" autocomplete="off" />
+                    <button id="searchButton" type="submit">Search</button>
+                </div>
+            </form>
+
+            <!-- Filter + surprise -->
+            <div class="header-actions">
+                <div class="filter-wrap">
+                    <i class="fa fa-filter filter-icon"></i>
+                    <select id="categoryfilter">
+                        <option value="">All Categories</option>
+                        <option value="breakfast">🌅 Breakfast</option>
+                        <option value="lunch">☀️ Lunch</option>
+                        <option value="dinner">🌙 Dinner</option>
+                        <option value="dessert">🍰 Dessert</option>
+                    </select>
+                </div>
+                <button id="randomrecipe" class="surprise-btn">
+                    <i class="fa fa-shuffle"></i> Surprise Me!
+                </button>
+            </div>
+        </div>
+    </header>
+
+
+    <!--Recipes grid-->
+    <section id="recipes"></section>
+
+    <!--Add recipe form-->
+    <section id="addRecipe">
+        <h2>Add Your Own Recipe</h2>
+            <input type="text" id="newName" placeholder="Recipe Name" required />
+            <input type="text" id="newImg" placeholder="Image URL" required />
+            <textarea id="newDesc" placeholder="Short Description" required></textarea>
+
+            <select id="newCategory" required>
+                <option value="">Select Category</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="dessert">Dessert</option>
+            </select>
+            
+             <!-- Bug fix: these two fields were missing from the HTML -->
+            <textarea id="newIngredients" placeholder="Ingredients (one per line)" required></textarea>
+            <textarea id="newDirections" placeholder="Directions (one step per line)" required></textarea>
+
+            <button id="addRecipeButton">Add Recipe</button>
+    </section>
+        
+    <script src="app.js"></script>
+
+<footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>🍳 What's Cooking Today?</h3>
+                <p>Discover delicious recipes and share your culinary creations with food lovers around the world.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="aboutuspage.html">About Us</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <div class="social-links">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 What's Cooking Today? All rights reserved. | Made with ❤️ for food lovers</p>
+        </div>
+    </footer>
+
+</body> 
+        
+</html>

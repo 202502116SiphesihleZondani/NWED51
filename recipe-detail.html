@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Details</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .detail-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: linear-gradient(145deg, #ff7a3d 0%, #ff5500 45%, #c93a00 100%);
+            color: white;
+            gap: 12px;
+        }
+        .detail-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin: 0;
+        }
+        .header-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .back-btn {
+            padding: 8px 16px;
+            border: 2px solid rgba(255,255,255,0.6);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.28); }
+
+        .dark-toggle {
+            background: rgba(255,255,255,0.18);
+            border: none;
+            border-radius: 50%;
+            width: 38px; height: 38px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+        .dark-toggle:hover { background: rgba(255,255,255,0.3); }
+
+        #recipeDetail {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px 40px;
+        }
+        .recipe-detail-card {
+            background-color: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        body.dark-mode .recipe-detail-card {
+            background-color: #2a2018;
+            color: #f5ede6;
+        }
+        body.dark-mode .recipe-detail-card h2,
+        body.dark-mode .recipe-detail-card h3,
+        body.dark-mode .recipe-detail-card p,
+        body.dark-mode .recipe-detail-card li {
+            color: #f5ede6;
+        }
+        .recipe-detail-card img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+        }
+        .recipe-detail-card .content {
+            padding: 28px;
+        }
+        .recipe-detail-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #1a1008;
+            margin: 0 0 10px;
+        }
+        .recipe-detail-card h3 {
+            font-size: 1.1rem;
+            color: #ff7a3d;
+            margin: 22px 0 8px;
+        }
+        .recipe-detail-card p,
+        .recipe-detail-card li {
+            color: #4a3828;
+            line-height: 1.7;
+            margin: 6px 0;
+        }
+        .recipe-detail-card ul,
+        .recipe-detail-card ol {
+            padding-left: 22px;
+        }
+        .category-badge {
+            display: inline-block;
+            background: #fff3ec;
+            color: #ff7a3d;
+            border: 1px solid #ffd0aa;
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+        body.dark-mode .category-badge {
+            background: #3a2010;
+            border-color: #8a4020;
+        }
+
+        @media (max-width: 600px) {
+            .detail-header h1 { font-size: 1.1rem; }
+            .recipe-detail-card img { height: 200px; }
+            .recipe-detail-card .content { padding: 18px; }
+            .recipe-detail-card h2 { font-size: 1.4rem; }
+            #recipeDetail { margin: 16px auto; padding: 0 12px 30px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="detail-header">
+        <h1>🍳 Recipe Details</h1>
+        <div class="header-controls">
+            <a class="back-btn" href="aboutuspage.html"><i class="fa fa-info-circle"></i> About Us</a>
+            <a class="back-btn" href="index.html"><i class="fa fa-arrow-left"></i> Back to Recipes</a>
+            <button class="dark-toggle" id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
+        </div>
+    </header>
+
+    <main id="recipeDetail"></main>
+
+   <script>
+        // ── Dark mode: persist across pages ──────────────────────────────────
+        const toggle = document.getElementById('darkModeToggle');
+
+        if (localStorage.getItem('darkMode') === 'on') {
+            document.body.classList.add('dark-mode');
+            toggle.textContent = '☀️';
+        }
+
+        toggle.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDark ? 'on' : 'off');
+            toggle.textContent = isDark ? '☀️' : '🌙';
+        });
+
+        // ── Recipe rendering ──────────────────────────────────────────────────
+        function getQueryParam(name) {
+            return new URLSearchParams(window.location.search).get(name);
+        }
+
+        function buildIngredients(meal) {
+            const items = [];
+            for (let i = 1; i <= 20; i++) {
+                const ingredient = meal[`strIngredient${i}`];
+                const measure = meal[`strMeasure${i}`];
+                if (ingredient && ingredient.trim()) {
+                    items.push(`${measure ? measure.trim() + ' ' : ''}${ingredient.trim()}`.trim());
+                }
+            }
+            return items;
+        }
+
+        function renderRecipe(recipe) {
+            const ingredientsList = Array.isArray(recipe.ingredients)
+                ? recipe.ingredients.map(item => `<li>${item}</li>`).join('')
+                : String(recipe.ingredients).split('\n').map(i => `<li>${i}</li>`).join('');
+
+            const directionsList = Array.isArray(recipe.directions)
+                ? recipe.directions.map(step => `<li>${step}</li>`).join('')
+                : String(recipe.directions).split('\n').map(s => `<li>${s}</li>`).join('');
+
+            recipeDetail.innerHTML = `
+                <div class="recipe-detail-card">
+                    <img src="${recipe.image}" alt="${recipe.name}">
+                    <div class="content">
+                        <h2>${recipe.name}</h2>
+                        <span class="category-badge">${recipe.category.toUpperCase()}</span>
+                        <p>${recipe.description}</p>
+                        <h3>🧂 Ingredients</h3>
+                        <ul>${ingredientsList}</ul>
+                        <h3>📋 Directions</h3>
+                        <ol>${directionsList}</ol>
+                    </div>
+                </div>
+            `;
+        }
+
+        const recipeDetail = document.getElementById('recipeDetail');
+        const random = getQueryParam('random') === 'true';
+        let recipe = null;
+
+        if (random) {
+            const storedMeal = sessionStorage.getItem('randomMeal');
+            if (storedMeal) {
+                const meal = JSON.parse(storedMeal);
+                recipe = {
+                    name: meal.strMeal,
+                    image: meal.strMealThumb,
+                    description: meal.strInstructions.split('. ')[0] || meal.strInstructions,
+                    category: meal.strCategory || 'Unknown',
+                    ingredients: buildIngredients(meal),
+                    directions: meal.strInstructions.split(/\.\s+|\n/).filter(Boolean)
+                };
+            }
+        } else {
+            const stored = sessionStorage.getItem('selectedRecipe');
+            if (stored) recipe = JSON.parse(stored);
+        }
+
+        if (!recipe) {
+            recipeDetail.innerHTML = '<div class="recipe-detail-card"><div class="content"><p>Recipe not found. Please <a href="index.html">return to the recipe list</a> and try again.</p></div></div>';
+        } else {
+            renderRecipe(recipe);
+        }
+    </script>
+</body>
+</html>
+
